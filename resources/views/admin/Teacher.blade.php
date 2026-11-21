@@ -13,6 +13,11 @@
                             Daftar data guru
                         </p>
                     </div>
+                    <div>
+                        @if (session('success'))<p class="mb-2 text-sm text-green-700">{{ session('success') }}</p>@endif
+                        @if (session('error'))<p class="mb-2 text-sm text-red-700">{{ session('error') }}</p>@endif
+                    </div>
+                    <a href="{{ route('admin.teachers.create') }}" class="rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800">+ Tambah Guru</a>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -24,6 +29,7 @@
                                 <th class="px-4 py-3">NIY</th>
                                 <th class="px-4 py-3">Subject</th>
                                 <th class="px-4 py-3">Tanggal Mulai</th>
+                                <th class="px-4 py-3">Aksi</th>
                             </tr>
                         </thead>
 
@@ -44,6 +50,14 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         {{ $teacher->start_date }}
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <form action="{{ route('admin.teachers.destroy', $teacher->id) }}" method="POST" class="inline"
+                                            onsubmit="return confirm('Yakin ingin menghapus data guru ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="font-medium text-red-600 hover:underline">Delete</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

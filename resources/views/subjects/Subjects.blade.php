@@ -12,6 +12,11 @@
                             Daftar mata pelajaran
                         </p>
                     </div>
+                    <div>
+                        @if (session('success'))<p class="mb-2 text-sm text-green-700">{{ session('success') }}</p>@endif
+                        @if (session('error'))<p class="mb-2 text-sm text-red-700">{{ session('error') }}</p>@endif
+                    </div>
+                    <a href="{{ route('admin.subjects.create') }}" class="rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800">+ Tambah Subject</a>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -22,6 +27,7 @@
                                 {{-- <th scope="col" class="px-4 py-3">ID</th> --}}
                                 <th scope="col" class="px-4 py-3">Nama Mata Pelajaran</th>
                                 <th scope="col" class="px-4 py-3">Teacher </th>
+                                <th scope="col" class="px-4 py-3">Aksi</th>
                             </tr>
                         </thead>
 
@@ -38,14 +44,20 @@
                                         {{ $subject->name }}
                                     </td>
                                     <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
-                                        @foreach ($subject->teachers as $teacher)
-                                            {{ $teacher->name }}<br>
-                                        @endforeach
+                                        {{ $subject->teacher?->name ?? 'Belum ada guru' }}
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <form action="{{ route('admin.subjects.destroy', $subject->id) }}" method="POST" class="inline"
+                                            onsubmit="return confirm('Yakin ingin menghapus mata pelajaran ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="font-medium text-red-600 hover:underline">Delete</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="3" class="px-4 py-6 text-center">
+                                    <td colspan="4" class="px-4 py-6 text-center">
 
                                     </td>
                                 </tr>

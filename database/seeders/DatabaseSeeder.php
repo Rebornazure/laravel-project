@@ -19,12 +19,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-         User::factory(10)->create();
+        User::factory(10)->create();
 
-         User::factory()->create([
-             'name' => 'Test User',
-             'email' => 'test@example.com',
-         ]);
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
 
         // Student::factory()->create([
         //     'name'=> 'lu sapa mpruy',
@@ -32,14 +32,17 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             ClassroomSeeder::class,
+            SubjectSeeder::class,
+            StudentSeeder::class,
+            TeacherSeeder::class
         ]);
 
-        Classroom::factory(15)
-        ->hasStudents(10)
-        ->create();
+        // Classroom::factory(15)
+        // ->hasStudents(4)
+        // ->create();
 
-        Subject::factory(6)
-        ->hasTeachers(3)
-        ->create();
+        // Subject::factory(6)
+        // ->hasTeachers(3)
+        // ->create();
     }
 }

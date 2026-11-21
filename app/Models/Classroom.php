@@ -17,7 +17,6 @@ class Classroom extends Model
     ];
     public function students()
     {
-        // hashmany, 1 classroom punya banyak students
         return $this->hasMany(Student::class, 'classroom_id');
     }
 }

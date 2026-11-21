@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Student;
 use App\Models\Classroom;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class StudentController extends Controller
         $students = Student::all();
         $classrooms = Classroom::all();
 
-        return view('admin.index', [
+        return view('student.index', [
             'title' => 'Student',
             'students' => $students,
             'classrooms' => $classrooms,
@@ -28,7 +29,12 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return redirect()->route('admin.students.index');
+        return view('student.index', [
+            'title' => 'Student',
+            'students' => Student::all(),
+            'classrooms' => Classroom::all(),
+            'showCreateModal' => true,
+        ]);
     }
 
     /**
@@ -60,24 +66,44 @@ class StudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $student)
     {
-        //
+        $student = Student::findOrFail($student);
+
+        return view('student.edit', [
+            'student' => $student,
+            'classrooms' => Classroom::all(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $student)
     {
-        //
+        $student = Student::findOrFail($student);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'nis' => 'required|string|max:10|unique:students,nis,' . $student->id,
+            'classroom_id' => 'required|exists:classroom,id',
+            'address' => 'required|string|max:65535',
+        ]);
+
+        $student->update($validated);
+
+        return redirect()->route('admin.students.index')->with('success', 'Data siswa berhasil diperbarui.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $student): RedirectResponse
     {
         //
+        $student = Student::findOrFail($student);
+        $student->delete();
+
+        return redirect()->route('admin.students.index')->with('success', 'Data siswa berhasil dihapus.');
     }
 }

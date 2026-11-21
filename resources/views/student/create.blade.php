@@ -1,5 +1,5 @@
 <div id="defaultModal" tabindex="-1" aria-hidden="true"
-    class="{{ $errors->any() ? 'flex' : 'hidden' }} overflow-y-auto overflow-x-hidden fixed inset-0 z-50 justify-center items-center w-full h-full bg-gray-900/50">
+    class="{{ ($errors->any() || ($showCreateModal ?? false)) ? 'flex' : 'hidden' }} overflow-y-auto overflow-x-hidden fixed inset-0 z-50 justify-center items-center w-full h-full bg-gray-900/50">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
         <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
             <div class="flex justify-between items-center pb-4 mb-4 border-b dark:border-gray-600">
